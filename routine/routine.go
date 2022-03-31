@@ -47,21 +47,21 @@ func RunningRoutines() int {
 }
 
 //goland:noinspection GoUnusedExportedFunction
-func StartRoutine(routine func()) {
+func StartRoutine(name string, routine func()) {
 	go func() {
-		routineStarted()
-		defer routineStopped()
+		routineStarted(name)
+		defer routineStopped(name)
 		routine()
 	}()
 }
 
-func routineStarted() {
-	logging.Info("Started routine")
+func routineStarted(name string) {
+	logging.Info("Started routine", name)
 	routinesCount++
 }
 
-func routineStopped() {
-	logging.Info("Stopped routine")
+func routineStopped(name string) {
+	logging.Info("Stopped routine", name)
 	routinesCount--
 }
 
