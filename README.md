@@ -1,1 +1,1 @@
-# toolkit-golog
+# golang toolkit
