@@ -14,6 +14,7 @@ var (
 	stopChannel     = make(chan struct{})
 )
 
+//goland:noinspection GoUnusedExportedFunction
 func WaitTillShutdown() {
 	once.Do(stopOnCtrlC)
 	select {
@@ -30,18 +31,22 @@ func Stop() {
 }
 
 // StopChannel returns channel to listen. Will be closed if stop required
+//goland:noinspection GoUnusedExportedFunction
 func StopChannel() <-chan struct{} {
 	return stopChannel
 }
 
+//goland:noinspection GoUnusedExportedFunction
 func IsStopRequested() bool {
 	return isStopRequested
 }
 
+//goland:noinspection GoUnusedExportedFunction
 func RunningRoutines() int {
 	return routinesCount
 }
 
+//goland:noinspection GoUnusedExportedFunction
 func StartRoutine(routine func()) {
 	go func() {
 		routineStarted()
