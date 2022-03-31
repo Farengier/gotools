@@ -1,6 +1,7 @@
 package routine
 
 import (
+	"github.com/Farengier/gotools/logging"
 	"github.com/Farengier/gotools/signals"
 	"sync"
 	"syscall"
@@ -50,10 +51,12 @@ func StartRoutine(routine func()) {
 }
 
 func routineStarted() {
+	logging.Info("Started routine")
 	routinesCount++
 }
 
 func routineStopped() {
+	logging.Info("Stopped routine")
 	routinesCount--
 }
 
