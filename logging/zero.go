@@ -1,6 +1,9 @@
 package logging
 
-import "github.com/rs/zerolog"
+import (
+	"fmt"
+	"github.com/rs/zerolog"
+)
 
 //goland:noinspection GoUnusedExportedFunction
 func SetLoggerZeroLog(l zerolog.Logger) {
@@ -12,20 +15,20 @@ type zeroAdapter struct {
 }
 
 func (za zeroAdapter) Fatal(args ...any) {
-	za.internal.Fatal().Fields(args).Send()
+	za.internal.Fatal().Msg(fmt.Sprint(args...))
 }
 func (za zeroAdapter) Panic(args ...any) {
-	za.internal.Panic().Fields(args).Send()
+	za.internal.Panic().Msg(fmt.Sprint(args...))
 }
 func (za zeroAdapter) Error(args ...any) {
-	za.internal.Error().Fields(args).Send()
+	za.internal.Error().Msg(fmt.Sprint(args...))
 }
 func (za zeroAdapter) Warn(args ...any) {
-	za.internal.Warn().Fields(args).Send()
+	za.internal.Warn().Msg(fmt.Sprint(args...))
 }
 func (za zeroAdapter) Info(args ...any) {
-	za.internal.Info().Fields(args).Send()
+	za.internal.Info().Msg(fmt.Sprint(args...))
 }
 func (za zeroAdapter) Debug(args ...any) {
-	za.internal.Debug().Fields(args).Send()
+	za.internal.Debug().Msg(fmt.Sprint(args...))
 }
