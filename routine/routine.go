@@ -12,10 +12,18 @@ var (
 	routinesCount   = 0
 	isStopRequested = false
 	stopChannel     = make(chan struct{})
+	exitChannel     = make(chan struct{})
 )
 
 //goland:noinspection GoUnusedExportedFunction
-func WaitTillShutdown() {
+func WaitForExit() {
+	select {
+	case <-exitChannel:
+	}
+}
+
+//goland:noinspection GoUnusedExportedFunction
+func WaitTillShutdownRequested() {
 	once.Do(stopOnCtrlC)
 	select {
 	case <-stopChannel:
@@ -48,6 +56,10 @@ func RunningRoutines() int {
 
 //goland:noinspection GoUnusedExportedFunction
 func StartRoutine(name string, routine func()) {
+	if isStopRequested {
+		logging.Warn("Routine ", name, " start declined")
+		return
+	}
 	go func() {
 		routineStarted(name)
 		defer routineStopped(name)
@@ -56,13 +68,17 @@ func StartRoutine(name string, routine func()) {
 }
 
 func routineStarted(name string) {
-	logging.Info("Started routine", name)
+	logging.Debug("Routine ", name, " started")
 	routinesCount++
 }
 
 func routineStopped(name string) {
-	logging.Info("Stopped routine", name)
+	logging.Debug("Routine ", name, " stopped")
 	routinesCount--
+	if isStopRequested && routinesCount == 0 {
+		logging.Info("Exiting")
+		close(exitChannel)
+	}
 }
 
 func stopOnCtrlC() {
